@@ -128,12 +128,12 @@ fitSmoothHazard <- function(formula, data, time,
     if (missing(censored.indicator)) {
       sampleData <- sampleCaseBase(originalData, timeVar, eventVar,
         comprisk = (length(typeEvents) > 2),
-        ratio
+        ratio, ...
       )
     } else {
       sampleData <- sampleCaseBase(originalData, timeVar, eventVar,
         comprisk = (length(typeEvents) > 2),
-        censored.indicator, ratio
+        censored.indicator, ratio, ...
       )
     }
   } else {
@@ -314,13 +314,13 @@ fitSmoothHazard.fit <- function(x, y, formula_time, time, event,
     sampleData <- sampleCaseBase(as.data.frame(cbind(y, x)),
       timeVar, eventVar,
       comprisk = (length(typeEvents) > 2),
-      ratio
+      ratio, ...
     )
   } else {
     sampleData <- sampleCaseBase(as.data.frame(cbind(y, x)),
       timeVar, eventVar,
       comprisk = (length(typeEvents) > 2),
-      censored.indicator, ratio
+      censored.indicator, ratio, ...
     )
   }
   # Format everything into matrices and expand variables that need to be
