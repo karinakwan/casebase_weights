@@ -1,4 +1,4 @@
-Package: casebase
+Package: casebase_weights
 Type: Package
 Title: Fitting Flexible Smooth-in-Time Hazards and Risk Functions via Logistic and Multinomial Regression
 Version: 0.10.2.9999
