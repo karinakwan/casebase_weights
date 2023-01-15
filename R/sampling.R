@@ -62,7 +62,7 @@
 #'
 #' out <- sampleCaseBase(DT, time = "time", event = "event", comprisk = TRUE)
 sampleCaseBase <- function(data, time, event, ratio = 10, comprisk = FALSE,
-                           censored.indicator, weights) {
+                           censored.indicator, wts) {
   # Get the variables names for time and event
   varNames <- checkArgsTimeEvent(data = data, time = time, event = event)
   timeVar <- varNames$time
