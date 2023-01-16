@@ -87,7 +87,7 @@ sampleCaseBase <- function(data, time, event, ratio = 10, comprisk = FALSE,
   )
 
   n <- nrow(survObj) # no. of subjects
-  B <- sum(survObj[, "time"]) # total person-time in base
+  B <- sum(survObj[, "time"] * weights) # total person-time in base
   c <- sum(survObj[, "status"] != 0) # no. of cases (events)
   b <- ratio * c # size of base series
   offset <- log(B / b) # offset so intercept = log(ID | x, t = 0 )
