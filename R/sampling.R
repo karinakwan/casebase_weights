@@ -94,7 +94,7 @@ sampleCaseBase <- function(data, time, event, ratio = 10, comprisk = FALSE,
 
   # We select person-moments from individual proportional
   # to their total follow-up time
-  prob_select <- survObj[, "time"] / B
+  prob_select <- survObj[, "time"] * wts / B
   which_pm <- sample(n, b, replace = TRUE, prob = prob_select)
   bSeries <- as.matrix(survObj[which_pm, ])
   bSeries[, "status"] <- 0
