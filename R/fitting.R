@@ -164,11 +164,16 @@ fitSmoothHazard <- function(formula, data, time,
     # }
   }
 
+  # Use survey package to get robust SEs for weighted casebase
+  svyDesObj <- survey::svydesign(ids = ~0, weights = ~wts, data = sampleData)
+
+
+
   # Fit a binomial model if there are no competing risks
   if (length(typeEvents) == 2) {
     fittingFunction <- switch(family,
-      "glm" = function(formula) glm(formula, data = sampleData,
-                                    family = binomial, weights = wts),
+      "glm" = function(formula) survey::svyglm(formula, design = svyDesObj,
+                                    family = quasibinomial(), weights = wts),
       "glmnet" = function(formula) cv.glmnet.formula(formula, sampleData,
                                                      event = eventVar, ...),
       "gam" = function(formula) mgcv::gam(formula, sampleData,
