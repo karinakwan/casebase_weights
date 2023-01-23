@@ -165,7 +165,8 @@ fitSmoothHazard <- function(formula, data, time,
   }
 
   # Use survey package to get robust SEs for weighted casebase
-  svyDesObj <- survey::svydesign(ids = ~0, weights = ~wts, data = sampleData)
+  svyDesObj <- survey::svydesign(ids = ~0, strata = ~status, weights = ~wts,
+                                 data = sampleData)
 
 
 
