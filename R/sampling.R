@@ -87,14 +87,14 @@ sampleCaseBase <- function(data, time, event, ratio = 10, comprisk = FALSE,
   )
 
   n <- nrow(survObj) # no. of subjects
-  B <- sum(survObj[, "time"] * wts) # total person-time in base
+  B <- sum(survObj[, "time"]) # total person-time in base
   c <- sum(survObj[, "status"] != 0) # no. of cases (events)
   b <- ratio * c # size of base series
   offset <- log(B / b) # offset so intercept = log(ID | x, t = 0 )
 
   # We select person-moments from individual proportional
   # to their total follow-up time
-  prob_select <- survObj[, "time"] *wts / B
+  prob_select <- survObj[, "time"] / B
   which_pm <- sample(n, b, replace = TRUE, prob = prob_select)
   bSeries <- as.matrix(survObj[which_pm, ])
   bSeries[, "status"] <- 0
