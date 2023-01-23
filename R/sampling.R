@@ -85,7 +85,7 @@ sampleCaseBase <- function(data, time, event, ratio = 10, comprisk = FALSE,
     eventVar,
     type = surv_type
   )
-
+  # no weights in offset or sampling probability
   n <- nrow(survObj) # no. of subjects
   B <- sum(survObj[, "time"]) # total person-time in base
   c <- sum(survObj[, "status"] != 0) # no. of cases (events)
