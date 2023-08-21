@@ -176,6 +176,7 @@ fitSmoothHazard <- function(formula, data, time,
       # "gbm" = function(formula) gbm::gbm(formula, sampleData,
       #                                    distribution = "bernoulli", ...)
     )
+  
 
     out <- fittingFunction(formula)
     out$lower_call <- out$call # Save lower call for plot method
@@ -188,6 +189,24 @@ fitSmoothHazard <- function(formula, data, time,
     num_pm <- table(sampleData[[eventVar]])
     out$num_cm <- num_pm[2]
     out$num_bm <- num_pm[1]
+    
+    
+    # Add jackknife standard error
+    
+    U=(out$data$status-out$fit)*model.matrix(out)
+    Iinv=summary(out)$cov.unscaled
+    dfbeta.score=U%*%Iinv*sampleData$wts
+    
+    dfbeta.score.temp<-NULL
+    for(ux in originalData$x){
+      use_ids<-which(sampleData$x==ux)
+      temp11<-dfbeta.score[use_ids,]
+      if(length(use_ids)>1){temp11<-apply(dfbeta.score[use_ids,],2,sum)}
+      dfbeta.score.temp<-rbind(dfbeta.score.temp,temp11)
+    }
+    
+    out$cb_seR.scoreR<-sqrt(sum(dfbeta.score.temp[,3]^2))
+    
     if (family == "glmnet") out$formula <- formula
     # Reset offset for absolute risk estimation, but keep track of it
     out$offset <- out$data$offset
