@@ -125,6 +125,7 @@ fitSmoothHazard <- function(formula, data, time,
   # Call sampleCaseBase if class is not cbData
   if (!inherits(data, "cbData")) {
     originalData <- as.data.frame(data)
+    originalData$temp_id <- 1:nrow(data)
     if (missing(censored.indicator)) {
       sampleData <- sampleCaseBase(originalData, timeVar, eventVar,
         comprisk = (length(typeEvents) > 2),
@@ -193,13 +194,13 @@ fitSmoothHazard <- function(formula, data, time,
     
     # Add jackknife standard error
     
-    U=(out$data$status-out$fit)*model.matrix(out)
+    U=(out$data[[eventVar]]-out$fit)*model.matrix(out)
     Iinv=summary(out)$cov.unscaled
     dfbeta.score=U%*%Iinv*sampleData$wts
     
     dfbeta.score.temp<-NULL
-    for(ux in originalData$x){
-      use_ids<-which(sampleData$x==ux)
+    for(id in originalData$temp_id){
+      use_ids<-which(sampleData$temp_id==id)
       temp11<-dfbeta.score[use_ids,]
       if(length(use_ids)>1){temp11<-apply(dfbeta.score[use_ids,],2,sum)}
       dfbeta.score.temp<-rbind(dfbeta.score.temp,temp11)
